@@ -6,12 +6,12 @@ import {
   Typography,
   Button,
   InputBase,
-  Drawer
+  Drawer,
 } from "@mui/material";
 import { styled, alpha } from "@mui/material/styles";
 import SearchIcon from "@mui/icons-material/Search";
 import ShoppingCartSharpIcon from "@mui/icons-material/ShoppingCartSharp";
-import PersonSharpIcon from '@mui/icons-material/PersonSharp';
+import PersonSharpIcon from "@mui/icons-material/PersonSharp";
 import { Cart } from "../../Pages/Cart";
 import { Sesion } from "../../Pages/Sesion";
 import { Link } from "react-router-dom";
@@ -57,53 +57,60 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
       },
     },
   },
-})
-);
+}));
 
 export const Navbar = () => {
-
   // Maneja el Drawer de Cart
-  const [open, setOpen] = React.useState(false);
-  const toggleDrawer = (newOpen) => () => {
-    setOpen(newOpen);
+  const [cartOpen, setCartOpen] = React.useState(false);
+  const toggleDrawerCart = (newOpen) => () => {
+    setCartOpen(newOpen);
   };
 
+  // Maneja el Drawer de Sesion
+  const [sessionOpen, setSessionOpen] = React.useState(false);
+  const toggleDrawerSesion = (newOpen) => () => {
+    setSessionOpen(newOpen);
+  };
+
+  
   const DrawerCart = (
-<Box
-  sx={{
-    width: '100%', 
-    height: '100%', 
-    display: 'flex', 
-    justifyContent: 'center', 
-    alignItems: 'center', 
-  }}
-  role="presentation"
-  onClick={toggleDrawer(false)}
->
-  <Cart />
-</Box>
+    <Box
+      sx={{
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+      role="presentation"
+      onClick={toggleDrawerCart(false)}
+    >
+      <Cart />
+    </Box>
   );
-  // Termina Manejo de Drawer de Cart
-  // Comienzo Drawer Sesion
-  // const DrawerSesion = (
-  //   <Box
-  //     sx={{
-  //       width: '100%', 
-  //       height: '100%', 
-  //       display: 'flex', 
-  //       justifyContent: 'center', 
-  //       alignItems: 'center', 
-  //     }}
-  //     role="presentation"
-  //     onClick={toggleDrawer(false)}
-  //   >
-  //   <Sesion/>
-  //   </Box>
-  //     );
-// Termina Manejo de Drawer de Sesion
+
+  const DrawerSesion = (
+    <Box
+      sx={{
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+      role="presentation"
+      onClick={toggleDrawerSesion(false)}
+    >
+      <Sesion />
+    </Box>
+  );
+
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="fixed" style={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }}>
+      <AppBar
+        position="fixed"
+        style={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }}
+      >
         <Toolbar>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             <Link to={"/"}>
@@ -143,20 +150,20 @@ export const Navbar = () => {
               inputProps={{ "aria-label": "search" }}
             />
           </Search>
-        {/* aqui va el drawer del carrito  */}
-        <Button onClick={toggleDrawer(true)} style={{ color: "white" }}>
+          {/* aqui va el drawer del carrito  */}
+          <Button onClick={toggleDrawerCart(true)} style={{ color: "white" }}>
             <ShoppingCartSharpIcon />
           </Button>
-          <Drawer open={open} onClose={toggleDrawer(false)}  anchor="right">
+          <Drawer open={cartOpen} onClose={toggleDrawerCart(false)} anchor="right">
             {DrawerCart}
           </Drawer>
           {/* aqui va el drawer de la sesion */}
-           {/* <Button onClick={toggleDrawer(true)} style={{ color: "white" }}> */}
-          {/* <PersonSharpIcon/> */}
-          {/* </Button>
-          <Drawer open={open} onClose={toggleDrawer(false)}  anchor="right">
+          <Button onClick={toggleDrawerSesion(true)} style={{ color: "white" }}>
+            <PersonSharpIcon />
+          </Button>
+          <Drawer open={sessionOpen} onClose={toggleDrawerSesion(false)} anchor="right">
             {DrawerSesion}
-          </Drawer> */}
+          </Drawer>
         </Toolbar>
       </AppBar>
     </Box>

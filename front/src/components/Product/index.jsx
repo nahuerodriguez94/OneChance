@@ -10,12 +10,16 @@ import {
 
 
 export const Product = ({image, title, description, price }) => (
-  <Grid2 container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-    <Card sx={{ maxWidth: 345 }}>
+  
+  <Grid2 container
+  sx={{ display: "flex", justifyContent: "center", mt: "120px" }}
+  spacing={5}>
+    <Card sx={{ maxWidth: 345}}>
       <CardActionArea>
         <CardMedia
           component="img"
-          height="140"
+          height= "200"
+          width="auto"
           alt="Imagen del producto"
           image={image}>
         </CardMedia>
