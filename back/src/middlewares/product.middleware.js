@@ -28,6 +28,36 @@ const validateProductData = (req, res, next) => {
     next();
 };
 
+const validateUpdateProduct = (req, res, next) => {
+  const { price, gender } = req.body;
+
+  // Validacion de precio
+  if (price !== undefined) {
+    if (typeof price !== "number" || price <= 0) {
+      return res.status(400).json({
+        status: "failure",
+        message: "El precio debe ser mayor a 0",
+      });
+    }
+  }
+  // Validacion de generos permitidos
+  if (gender !== undefined) {
+    const validGenders = ["Hombre", "Mujer"];
+    if (!validGenders.includes(gender)) {
+      return res.status(400).json({
+        status: "failure",
+        message: `El genero debe ser uno de los siguientes: ${validGenders.join(
+          ", "
+        )}`,
+      });
+    }
+  }
+
+  next();
+};
+
+
 module.exports = {
-    validateProductData
+    validateProductData,
+    validateUpdateProduct
 };

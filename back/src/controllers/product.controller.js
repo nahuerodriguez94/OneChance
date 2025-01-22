@@ -41,9 +41,70 @@ const createProduct = async (req, res) => {
   }
 };
 
+const updateProduct = async (req, res) => {
+  const { id } = req.params;
+  const body = req.body;
+
+  try {
+    // Actualiza producto
+    const [updatedRows] = await Product.update(body, { where: { id: id } });
+
+    if (updatedRows) {
+      // Buscar el producto actualizado
+      const updatedProduct = await Product.findByPk(id);
+
+      return res.status(200).json({
+        status: "success",
+        message: "Producto actualizado con éxito",
+        product: updatedProduct,
+      });
+    } else {
+      return res.status(400).json({
+        status: "warning",
+        message: "No se encontró el producto para actualizar",
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      status: "failure",
+      message: "Ocurrió un error al intentar actualizar el producto",
+      error: error.message,
+    });
+  }
+};
+
+const deleteProduct = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const productToDelete = await Product.findByPk(id);
+    if (!productToDelete) {
+      return res.status(404).json({
+        status: "warning",
+        message: "No se encontro el producto para eliminar",
+      });
+    }
+    // Elimina producto
+    await Product.destroy({ where: { id: id } });
+    return res.status(200).json({
+      status: "success",
+      message: "Producto eliminado con exito",
+      product: productToDelete,
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: "failure",
+      message: "Ocurrió un error al intentar eliminar el producto",
+      error: error.message,
+    });
+  }
+};
+
 // Exportaciones
 module.exports = {
   createProduct,
   getProducts,
   getProductById,
+  updateProduct,
+  deleteProduct,
 };
