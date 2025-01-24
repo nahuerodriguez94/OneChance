@@ -1,13 +1,20 @@
 const express = require('express');
 const { sequelize } = require("./db/db.js");
-const productRoutes = require("./routes/product.routes.js")
+const productRoutes = require("./routes/product.routes.js");
+const morgan = require("morgan");
+const cors = require("cors");
+const bodyParser = require("body-parser");
 
 const app = express();
 
 const PORT = 3000;
 
-// Middleware para interpretar JSON
+// Middleware
 app.use(express.json());
+app.use(morgan("tiny"));
+app.use(cors({ origin: "http://localhost:5173"}));
+app.use(bodyParser.json());
+app.use("/", express.static("public"));
 
 
 app.get('/', (req, res) => {

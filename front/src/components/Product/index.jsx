@@ -5,11 +5,13 @@ import {
   CardMedia,
   Typography,
   CardActionArea, 
-  Grid2
+  Grid2, 
+  Stack,
+  Button,
 } from '@mui/material';
 
 
-export const Product = ({image, title, description, price }) => (
+export const Product = ({image, title, price }) => (
   
   <Grid2 container
   sx={{ display: "flex", justifyContent: "center", mt: "120px" }}
@@ -19,20 +21,22 @@ export const Product = ({image, title, description, price }) => (
         <CardMedia
           component="img"
           height= "200"
-          width="auto"
           alt="Imagen del producto"
-          image={image}>
-        </CardMedia>
+          image= {image}
+          sx={{ objectFit: "cover" }}/>
         <CardContent>
           <Typography gutterBottom variant="h5" component="div" >
             {title}
           </Typography>
-          <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-            {description}
-          </Typography>
           <Typography variant="subtitle1" color="initial">${price}</Typography>
         </CardContent>
+
       </CardActionArea>
+      <Stack>
+          <Button variant="contained">
+            Agregar al Carrito
+          </Button>
+        </Stack>
     </Card>
     </Grid2>
 )
