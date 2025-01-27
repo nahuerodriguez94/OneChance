@@ -60,7 +60,7 @@ const updateProduct = async (req, res) => {
       });
     } else {
       return res.status(400).json({
-        status: "warning",
+        status: "failure",
         message: "No se encontró el producto para actualizar",
       });
     }

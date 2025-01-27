@@ -1,6 +1,7 @@
 const express = require('express');
 const { sequelize } = require("./db/db.js");
 const productRoutes = require("./routes/product.routes.js");
+const clientRoutes = require("./routes/client.routes.js");
 const morgan = require("morgan");
 const cors = require("cors");
 const bodyParser = require("body-parser");
@@ -41,3 +42,4 @@ connection();
 
 //Router
 app.use("/product", productRoutes);
+app.use("/client", clientRoutes);
