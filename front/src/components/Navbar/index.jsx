@@ -16,7 +16,7 @@ import { Cart } from "../../Pages/Cart";
 import { Sesion } from "../../Pages/Sesion";
 import { Link } from "react-router-dom";
 
-// Funcion Buscador
+// Función Buscador
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
   borderRadius: theme.shape.borderRadius,
@@ -47,7 +47,6 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   width: "100%",
   "& .MuiInputBase-input": {
     padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
     transition: theme.transitions.create("width"),
     [theme.breakpoints.up("sm")]: {
@@ -60,20 +59,20 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export const Navbar = () => {
-  // Maneja el Drawer de Cart
+  // Estado de los Drawers
   const [cartOpen, setCartOpen] = React.useState(false);
-  const toggleDrawerCart = (newOpen) => () => {
-    setCartOpen(newOpen);
-  };
-
-  // Maneja el Drawer de Sesion
   const [sessionOpen, setSessionOpen] = React.useState(false);
-  const toggleDrawerSesion = (newOpen) => () => {
-    setSessionOpen(newOpen);
-  };
 
-  
-  const DrawerCart = (
+  // Funciones para manejar los Drawers
+  const toggleDrawerCart = React.useCallback((open) => () => {
+    setCartOpen(open);
+  }, []);
+
+  const toggleDrawerSession = React.useCallback((open) => () => {
+    setSessionOpen(open);
+  }, []);
+
+  const cartDrawerContent = (
     <Box
       sx={{
         width: "100%",
@@ -83,13 +82,12 @@ export const Navbar = () => {
         alignItems: "center",
       }}
       role="presentation"
-      onClick={toggleDrawerCart(false)}
     >
       <Cart />
     </Box>
   );
 
-  const DrawerSesion = (
+  const sessionDrawerContent = (
     <Box
       sx={{
         width: "100%",
@@ -99,7 +97,6 @@ export const Navbar = () => {
         alignItems: "center",
       }}
       role="presentation"
-      onClick={toggleDrawerSesion(false)}
     >
       <Sesion />
     </Box>
@@ -107,13 +104,10 @@ export const Navbar = () => {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar
-        position="fixed"
-        style={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }}
-      >
+      <AppBar position="fixed" sx={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }}>
         <Toolbar>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            <Link to={"/"}>
+            <Link to="/">
               <img
                 src="logoSinFondo.png"
                 alt="Logo"
@@ -126,18 +120,12 @@ export const Navbar = () => {
             </Link>
           </Typography>
           <Button variant="text" color="inherit">
-            <Link
-              to={"/tienda"}
-              style={{ color: "white", textDecoration: "none" }}
-            >
+            <Link to="/tienda" style={{ color: "white", textDecoration: "none" }}>
               Tienda
             </Link>
           </Button>
           <Button variant="text" color="inherit">
-            <Link
-              to={"/contacto"}
-              style={{ color: "white", textDecoration: "none" }}
-            >
+            <Link to="/contacto" style={{ color: "white", textDecoration: "none" }}>
               Contacto
             </Link>
           </Button>
@@ -145,24 +133,21 @@ export const Navbar = () => {
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>
-            <StyledInputBase
-              placeholder="Buscar..."
-              inputProps={{ "aria-label": "search" }}
-            />
+            <StyledInputBase placeholder="Buscar..." inputProps={{ "aria-label": "search" }} />
           </Search>
-          {/* aqui va el drawer del carrito  */}
-          <Button onClick={toggleDrawerCart(true)} style={{ color: "white" }}>
+          {/* Drawer del carrito */}
+          <Button onClick={toggleDrawerCart(true)} sx={{ color: "white" }}>
             <ShoppingCartSharpIcon />
           </Button>
           <Drawer open={cartOpen} onClose={toggleDrawerCart(false)} anchor="right">
-            {DrawerCart}
+            {cartDrawerContent}
           </Drawer>
-          {/* aqui va el drawer de la sesion */}
-          <Button onClick={toggleDrawerSesion(true)} style={{ color: "white" }}>
+          {/* Drawer de sesión */}
+          <Button onClick={toggleDrawerSession(true)} sx={{ color: "white" }}>
             <PersonSharpIcon />
           </Button>
-          <Drawer open={sessionOpen} onClose={toggleDrawerSesion(false)} anchor="right">
-            {DrawerSesion}
+          <Drawer open={sessionOpen} onClose={toggleDrawerSession(false)} anchor="right">
+            {sessionDrawerContent}
           </Drawer>
         </Toolbar>
       </AppBar>

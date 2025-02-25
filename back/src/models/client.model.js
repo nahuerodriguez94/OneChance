@@ -1,10 +1,10 @@
 const { sequelize } = require("../db/db.js");
+const bcrypt = require("bcryptjs");
 const { DataTypes } = require("sequelize");
 
 const Client = sequelize.define(
   "client",
   {
-    // Datos de Log in
     id: {
       type: DataTypes.INTEGER,
       allowNull: false,
@@ -20,7 +20,22 @@ const Client = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    // Datos de contacto
+    email: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+      validate: {
+        isEmail: true, // Validación de formato de email
+      },
+    },
+    phone: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      validate: {
+        isNumeric: true, // Solo permite números
+        len: [10, 10], // Debe tener 10 dígitos
+      },
+    },
     address: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -30,7 +45,17 @@ const Client = sequelize.define(
       allowNull: false,
     },
   },
-  { timestamps: false }
+  {
+    timestamps: false,  // No se generarán las fechas de creación y actualización
+    hooks: {
+      beforeCreate: async (client) => {
+        if (client.password) {
+          const salt = await bcrypt.genSalt(10);
+          client.password = await bcrypt.hash(client.password, salt);  // Encriptación de la contraseña
+        }
+      },
+    },
+  }
 );
 
 module.exports = { Client };

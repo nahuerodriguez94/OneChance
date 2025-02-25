@@ -32,7 +32,7 @@ const createClient = async (req, res) => {
     const response = await Client.create(body);
     res.status(200).json(response);
   } catch (error) {
-    res.status(500).json({ status: "failure", message: error, message });
+    res.status(500).json({ status: "failure", message: error.message });
   }
 };
 
