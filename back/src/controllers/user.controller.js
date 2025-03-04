@@ -1,4 +1,5 @@
 const { User } = require("../models/user.model");
+const bcrypt = require("bcrypt");
 
 const getUser = async (req, res) => {
   try {
@@ -94,10 +95,56 @@ const deleteUser = async (req, res) => {
   }
 };
 
+const loginUser = async (req, res) => {
+  const { username, password } = req.body;
+
+  try {
+    const usuario = await User.findOne({ where: { username } });
+
+    if (!usuario || !(await bcrypt.compare(password, usuario.password))) {
+      return res.status(401).json({ message: "Usuario o contraseña incorrectos" });
+    }
+
+    req.session.username = username;
+    req.session.role = usuario.role; // Guardamos también el rol del usuario
+
+    req.session.save((err) => {
+      if (err) {
+        return res.status(500).json({ message: "Error al guardar la sesión" });
+      }
+
+      res.status(200).json({
+        message: "Inicio de sesión con éxito",
+        user: { username: usuario.username, role: usuario.role },
+      });
+    });
+  } catch (error) {
+    res.status(500).json({ status: "failure", message: error.message });
+  }
+};
+
+const logoutUser = (req, res) => {
+  if (!req.session || !req.session.username) {
+    return res.status(400).json({ message: "No hay sesión activa" });
+  }
+
+  req.session.destroy((err) => {
+    if (err) {
+      return res.status(500).json({ message: "Error al cerrar sesión" });
+    }
+
+    res.clearCookie("connect.sid"); // Limpia la cookie de sesión en el navegador
+    res.status(200).json({ message: "Sesión cerrada exitosamente" });
+  });
+};
+
+
 module.exports = {
   getUser,
   getUserById,
   createUser,
   updateUser,
   deleteUser,
+  loginUser,
+  logoutUser,
 };

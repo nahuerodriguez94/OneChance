@@ -6,6 +6,8 @@ const {
   createUser,
   updateUser,
   deleteUser,
+  loginUser,
+  logoutUser,
 } = require("../controllers/user.controller.js");
 
 const {
@@ -15,6 +17,8 @@ const {
 const router = Router();
 
 router.post("/", validateUser, createUser);
+router.post("/login",loginUser);
+router.post("/logout", logoutUser);
 router.get("/", getUser);
 router.get("/:id", getUserById);
 router.put("/:id", updateUser);

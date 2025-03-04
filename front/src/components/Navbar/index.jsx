@@ -13,7 +13,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import ShoppingCartSharpIcon from "@mui/icons-material/ShoppingCartSharp";
 import PersonSharpIcon from "@mui/icons-material/PersonSharp";
 import { Cart } from "../../Pages/Cart";
-import { Sesion } from "../../Pages/Sesion";
+import { FormLogin } from "../../Pages/FormLogin"; 
 import { Link } from "react-router-dom";
 
 // Función Buscador
@@ -62,6 +62,7 @@ export const Navbar = () => {
   // Estado de los Drawers
   const [cartOpen, setCartOpen] = React.useState(false);
   const [sessionOpen, setSessionOpen] = React.useState(false);
+  const [user, setUser] = React.useState(null); // Estado para manejar el usuario logueado
 
   // Funciones para manejar los Drawers
   const toggleDrawerCart = React.useCallback((open) => () => {
@@ -98,7 +99,7 @@ export const Navbar = () => {
       }}
       role="presentation"
     >
-      <Sesion />
+      <FormLogin setUser={setUser} onClose={toggleDrawerSession(false)} />
     </Box>
   );
 
