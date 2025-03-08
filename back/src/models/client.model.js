@@ -1,6 +1,7 @@
 const { sequelize } = require("../db/db.js");
 const bcrypt = require("bcryptjs");
 const { DataTypes } = require("sequelize");
+const { Ticket } = require("./tickets.model.js");
 
 const Client = sequelize.define(
   "client",
@@ -57,5 +58,5 @@ const Client = sequelize.define(
     },
   }
 );
-
+Client.hasMany(Ticket, { foreignKey: 'clientId'})
 module.exports = { Client };
