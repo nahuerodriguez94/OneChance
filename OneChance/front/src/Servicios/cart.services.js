@@ -29,6 +29,10 @@ export const createCart = async (cartData) => {
     const response = await axios.post("http://localhost:3000/cart", cartData, {  
       headers: { "Content-Type": "application/json" },
     });
+
+    // Guardar carrito en localStorage
+    localStorage.setItem("cartGuardado", JSON.stringify(cartData));
+
     return response.data;
   } catch (error) {
     console.error("Error al crear/actualizar el carrito:", error.response?.data || error.message);

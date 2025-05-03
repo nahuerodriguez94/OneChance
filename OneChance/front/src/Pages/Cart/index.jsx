@@ -1,10 +1,22 @@
 import React, { useContext } from "react";
-import {CartContext} from "../../CartContext/index.jsx";
+import { CartContext } from "../../CartContext/index.jsx";
 import { createCart } from "../../Servicios/cart.services.js";
-import { Button, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from "@mui/material";
+import { Link } from "react-router-dom";
+import {
+  Button,
+  Typography,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+} from "@mui/material";
 
 export const Cart = () => {
-  const { cartItems, getTotalAmount, setCartItems, addToCart } = useContext(CartContext);
+  const { cartItems, getTotalAmount, setCartItems, addToCart } =
+    useContext(CartContext);
   const clientName = localStorage.getItem("userCliente") || "Cliente";
 
   const handlePayment = async () => {
@@ -29,7 +41,10 @@ export const Cart = () => {
       alert("Gracias por su compra. Su carrito se ha guardado.");
       setCartItems([]); // Limpiar carrito tras la compra
     } catch (error) {
-      console.error("Error al procesar el pago:", error.response?.data || error.message);
+      console.error(
+        "Error al procesar el pago:",
+        error.response?.data || error.message
+      );
       alert("Ocurrió un error al procesar el pago. Intente de nuevo.");
     }
   };
@@ -38,18 +53,23 @@ export const Cart = () => {
 
   // Función para reducir cantidad de productos en el carrito
   const decreaseQuantity = (id) => {
-    setCartItems((prevItems) =>
-      prevItems
-        .map((item) =>
-          item.id === id ? { ...item, quantity: Math.max(1, item.quantity - 1) } : item
-        )
-        .filter((item) => item.quantity > 0) // Elimina productos con cantidad 0
+    setCartItems(
+      (prevItems) =>
+        prevItems
+          .map((item) =>
+            item.id === id
+              ? { ...item, quantity: Math.max(1, item.quantity - 1) }
+              : item
+          )
+          .filter((item) => item.quantity > 0) // Elimina productos con cantidad 0
     );
   };
 
   return (
     <>
-      <Typography variant="h6" sx={{ padding: 2 }}>Carrito</Typography>
+      <Typography variant="h6" sx={{ padding: 2 }}>
+        Carrito
+      </Typography>
       {cartItems.length > 0 ? (
         <>
           <Typography sx={{ padding: 2 }}>
@@ -70,20 +90,24 @@ export const Cart = () => {
                 {cartItems.map((item, index) => (
                   <TableRow key={item.id || index}>
                     <TableCell>
-                      <img 
-                        src={item.image} 
-                        alt={`Imagen de ${item.name}`} 
-                        style={{ width: "50px", marginRight: "10px" }} 
+                      <img
+                        src={item.image}
+                        alt={`Imagen de ${item.name}`}
+                        style={{ width: "50px", marginRight: "10px" }}
                       />
                       {item.name}
                     </TableCell>
                     <TableCell>U$S {item.price}</TableCell>
                     <TableCell>
-                      <Button onClick={() => decreaseQuantity(item.id)}>-</Button>
+                      <Button onClick={() => decreaseQuantity(item.id)}>
+                        -
+                      </Button>
                       {item.quantity || 1}
                       <Button onClick={() => addToCart(item)}>+</Button>
                     </TableCell>
-                    <TableCell>U$S {(item.price * (item.quantity || 1)).toFixed(2)}</TableCell>
+                    <TableCell>
+                      U$S {(item.price * (item.quantity || 1)).toFixed(2)}
+                    </TableCell>
                   </TableRow>
                 ))}
                 <TableRow>
@@ -91,23 +115,21 @@ export const Cart = () => {
                     <Typography variant="h6">Total:</Typography>
                   </TableCell>
                   <TableCell>
-                    <Typography variant="h6">U$S {getTotalAmount().toFixed(2)}</Typography>
+                    <Typography variant="h6">
+                      U$S {getTotalAmount().toFixed(2)}
+                    </Typography>
                   </TableCell>
                 </TableRow>
               </TableBody>
             </Table>
+            
+            <Button variant="contained" color="primary" sx={{ margin: 2 }}>
+              <Link to="/compra"> Ir al Carrito </Link>
+            </Button>
             <Button
               variant="contained"
-              color="primary"
-              onClick={handlePayment}
-              sx={{ margin: 2 }}
-            >
-              Pagar
-            </Button>
-            <Button 
-              variant="contained" 
-              color="warning" 
-              onClick={handleClearCart} 
+              color="warning"
+              onClick={handleClearCart}
               sx={{ margin: 2 }}
             >
               Vaciar Carrito
